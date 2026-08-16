@@ -32,7 +32,7 @@ void setup_web(){
 
     server.on("/arm", []() {
 
-        arm();
+        arm(calibration);
 
         server.send(200, "text/plain", "OK");
 

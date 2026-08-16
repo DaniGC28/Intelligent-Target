@@ -79,7 +79,7 @@ void update_ble(){
     }
 
     if (rssiBeacon > -thresholdBLE && !armed){
-        arm();
+        arm(calibration);
     }
 
 }

@@ -6,7 +6,6 @@
 #include "radar.h"
 
 
-
 void setup() {
   Serial.begin(115200);
 
@@ -14,7 +13,7 @@ void setup() {
   setup_servo();
   setup_ble();
 
-  disarm();
+  setup_global();
   
 }
 
@@ -28,7 +27,7 @@ void loop() {
         unsigned long elapsed = millis() - startTime;
 
         if (!timedArmed && elapsed >= beforeTime) {
-            arm();
+            arm(calibration);
             timedArmed = true;
         }
 

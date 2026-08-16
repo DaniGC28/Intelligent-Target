@@ -9,7 +9,7 @@ void update_radar(){
 
   if (false){
       if(radarPresence){
-          arm();
+          arm(calibration);
       }else{
           disarm();
       }

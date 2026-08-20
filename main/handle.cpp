@@ -140,6 +140,9 @@ void setup_web(){
     server.on("/script.js", []() {
       server.send(200, "application/javascript", js);
     });
+    server.on("/style.css", []() {
+      server.send(200, "text/css", css);
+    });
 
     server.onNotFound([]() {
         server.send(200, "text/html", html);

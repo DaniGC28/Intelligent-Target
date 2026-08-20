@@ -6,5 +6,6 @@ void update_web();
 
 extern char html[];
 extern char js[];
+extern char css[];
 
 #endif

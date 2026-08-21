@@ -30,15 +30,50 @@ void setup_web(){
         server.send(200, "text/html", html);
     });
 
+    server.on("/getPos", []() {
+      JsonDocument doc;
+
+      doc["left"] = lPos;
+      doc["right"] = rPos;
+
+      String resposta;
+      serializeJson(doc, resposta);
+
+      server.send(200, "application/json", resposta);
+    });
+    server.on("/getTogglePiezo", []() {
+      server.send(200, "text/plain", togglePiezo);
+    });
+    server.on("/getToggleRadar", []() {
+      server.send(200, "text/plain", toggleRadar);
+    });
+    server.on("/getToggleBLE", []() {
+      server.send(200, "text/plain", toggleBLE);
+    });
+
+    server.on("/updateRightPos", []() {
+      rPos = server.arg("pos").toInt();
+
+      server.send(200, "text/plain", "OK");
+    });
+    server.on("/updateLeftPos", []() {
+      lPos = server.arg("pos").toInt();
+
+      server.send(200, "text/plain", "OK");
+    });
+
     server.on("/arm", []() {
 
-        arm(calibration);
+        String valuePos = server.arg("pos");
+
+        pos = valuePos.toInt();
+
+        arm(calibration, pos);
 
         server.send(200, "text/plain", "OK");
 
         armed = true;
     });
-
     server.on("/disarm", []() {
 
         disarm();
@@ -48,6 +83,39 @@ void setup_web(){
         armed = false;
     });
 
+    server.on("/timed", []() {
+
+      beforeTime = server.arg("bval").toInt() * 1000;
+      armedTime  = server.arg("wval").toInt() * 1000;
+      timedPos = server.arg("pos");
+
+      startTime = millis();
+      timedRunning = true;
+      timedArmed = false;
+
+      server.send(200, "text/plain", "OK");
+  });
+    server.on("/stopTimed", []() {
+
+      if (timedRunning){
+        timedRunning = false;
+      }
+      if (timedArmed){
+        timedArmed = false;
+        disarm();
+      }
+      
+    });
+    server.on("/timedStatus", []() {
+      server.send(200, "text/plain", timedRunning ? "1" : "0");
+    });
+
+    server.on("/togglePiezo", []() {
+      bool val = server.arg("value") == "true";
+      togglePiezo = val;
+      
+      server.send(200, "text/plain", "OK");
+    });
     server.on("/updateThresholdPiezo", []() {
 
           String valor = server.arg("value");
@@ -55,6 +123,20 @@ void setup_web(){
 
           server.send(200, "text/plain", "OK");
 
+    });
+
+    server.on("/toggleRadar", []() {
+      bool val = server.arg("value") == "true";
+      toggleRadar = val;
+      
+      server.send(200, "text/plain", "OK");
+    });
+
+    server.on("/toggleBLE", []() {
+      bool val = server.arg("value") == "true";
+      toggleBLE = val;
+      
+      server.send(200, "text/plain", "OK");
     });
     server.on("/updateThresholdBLE", []() {
 
@@ -126,17 +208,7 @@ void setup_web(){
       server.send(200, "text/plain", "OK");
     });
 
-    server.on("/timed", []() {
 
-      beforeTime = server.arg("bval").toInt() * 1000;
-      armedTime  = server.arg("wval").toInt() * 1000;
-
-      startTime = millis();
-      timedRunning = true;
-      timedArmed = false;
-
-      server.send(200, "text/plain", "OK");
-  });
     server.on("/script.js", []() {
       server.send(200, "application/javascript", js);
     });

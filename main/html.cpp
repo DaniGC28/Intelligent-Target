@@ -6,6 +6,7 @@ char html[] = R"rawliteral(
 
 <link rel="stylesheet" type="text/css" href="/style.css">
 
+
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Target</title>
@@ -15,42 +16,38 @@ char html[] = R"rawliteral(
 
 <h1>Target</h1>
 
-<!-- <button onclick="fetch('/arm')">
-Armar
-</button>
-<button onclick="fetch('/disarm')">
-Desarmar
-</button> -->
 
 <div class="row">
 <div class="column">
     <h2>Izquierda</h2>
 
-    <button>&#8810;</button>
-    <button><</button>
-    <input type="text" value="45" size="1">
-    <button>></button>
-    <button>&#8811;</button>
+    <button onclick="updateLeftPos(-10)">&#8810;</button>
+    <button onclick="updateLeftPos(-1)"><</button>
+    <input type="text" value="45" size="1" 
+    id="leftPos" onchange="posChange('left')">
+    <button onclick="updateLeftPos(1)">></button>
+    <button onclick="updateLeftPos(10)">&#8811;</button>
     
     <br><br>
 
-    <button>Armar</button>
-    <button>Desarmar</button>
+    <button onclick="armLeft()" class="dButton">Armar</button>
+    <button onclick="fetch('/disarm')" class="dButton">Desarmar</button>
 
 </div>
 <div class="column">
     <h2>Derecha</h2>
 
-    <button>&#8810;</button>
-    <button><</button>
-    <input type="text" value="45" size="1">
-    <button>></button>
-    <button>&#8811;</button>
+    <button onclick="updateRightPos(-10)">&#8810;</button>
+    <button onclick="updateRightPos(-1)"><</button>
+    <input type="text" value="45" size="1"
+    id="rightPos" onchange="posChange('right')">
+    <button onclick="updateRightPos(1)">></button>
+    <button onclick="updateRightPos(10)">&#8811;</button>
 
     <br><br>
 
-    <button>Armar</button>
-    <button>Desarmar</button>
+    <button onclick="armRight()" class="dButton">Armar</button>
+    <button onclick="fetch('/disarm')" class="dButton">Desarmar</button>
 
 </div>
 </div>
@@ -64,15 +61,15 @@ Desarmar
 
     <br>
 
-    <button onclick="timed()">
+    <button onclick="timed('left')" class="dButton">
         Ejecutar Izq.
     </button>
 
-    <button>
+    <button onclick="fetch('/stopTimed')">
         Parar
     </button>
 
-    <button>
+    <button onclick="timed('right')" class="dButton">
         Ejecutar Der.
     </button>
 
@@ -82,7 +79,7 @@ Desarmar
 
     Piezo activo
     <label class="switch">
-        <input type="checkbox">
+        <input type="checkbox" id="piezoSwitch" onchange="togglePiezo()">
         <span class="slider round"></span>
     </label>
 
@@ -100,7 +97,7 @@ Desarmar
 
     Sensor activo
     <label class="switch">
-        <input type="checkbox">
+        <input type="checkbox" id="radarSwitch" onchange="toggleRadar()">
         <span class="slider round"></span>
     </label>
 
@@ -110,7 +107,7 @@ Desarmar
 
     BLE activo
     <label class="switch">
-        <input type="checkbox">
+        <input type="checkbox" id="bleSwitch" onchange="toggleBLE()">
         <span class="slider round"></span>
     </label>
 
@@ -137,8 +134,6 @@ Desarmar
         <ul id="beaconList"></ul>
         <button onclick="closePopup()">Tancar</button>
     </div>
-
-
 
 <scipt src="/script.js"></script>
 

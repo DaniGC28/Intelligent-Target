@@ -15,5 +15,6 @@ extern char BEACON_ADRESS[18];
 extern String BEACON_NAME;
 extern bool searching4BLE;
 extern int thresholdBLE;
+extern bool toggleBLE;
 
 #endif

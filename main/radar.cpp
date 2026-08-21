@@ -4,10 +4,11 @@
 #include "global.h"
 
 bool radarPresence;
+bool toggleRadar = false;
 
 void update_radar(){
 
-  if (false){
+  if (toggleRadar){
       if(radarPresence){
           arm(calibration);
       }else{

@@ -6,15 +6,18 @@ bool armed = false;
 
 bool timedRunning;
 bool timedArmed;
+bool timedSide;
 
 unsigned long startTime;
 unsigned long beforeTime;
 unsigned long armedTime;
 
 int calibration[20];
+int lPos = 45;
+int rPos = 45;
 
-bool arm(int calibration[20]) {
-    servo.write(90);
+bool arm(int calibration[20], int pos) {
+    servo.write(pos+90);
     int i = 0;
     unsigned long int start = millis();
     while (i < 20){
@@ -33,12 +36,7 @@ void disarm() {
     servo.write(0);
     armed = false;
 }
-void timed(int b, int w) {
-    delay(b);
-    arm(calibration);
-    delay(w);
-    disarm();
-}
+
 void cal(int calibration[20]) {
     unsigned long int start = millis();
     int i = 0;
@@ -54,4 +52,18 @@ void cal(int calibration[20]) {
 
 void setup_global(){
     cal(calibration);
+}
+
+void update_global(){
+    if (timedRunning){
+        if (!timedArmed && millis() - startTime >= beforeTime){
+            arm(calibration, timedPos);
+            timedArmed = true;
+        } else if (timedArmed && millis() - startTime >= beforeTime + armedTime){
+            disarm();
+            timedRunning = false;
+            timedArmed = false;
+        }
+        delay(100);
+    }
 }

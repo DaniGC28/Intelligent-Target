@@ -4,5 +4,6 @@
 void update_radar();
 
 extern bool radarPresence;
+extern bool toggleRadar;
 
 #endif

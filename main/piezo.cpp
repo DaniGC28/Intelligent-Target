@@ -4,11 +4,12 @@
 
 const int piezoPin = 34;
 int thresholdPiezo = 100;
+bool togglePiezo = false;
 
 void update_piezo(){
-
-  if (analogRead(piezoPin) > thresholdPiezo && armed){
-        disarm();
-    }
-
+  if (togglePiezo){
+    if (analogRead(piezoPin) > thresholdPiezo && armed){
+            disarm();
+        }
+  }
 }

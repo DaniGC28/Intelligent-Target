@@ -14,6 +14,7 @@ bool searching4BLE = false;
 volatile int rssiBeacon = -10000;
 volatile bool beaconTrobat = false;
 unsigned long ultimPrint = 0;
+bool toggleBLE = false;
 class ScanCallbacks : public NimBLEScanCallbacks {
 
     void onResult(const NimBLEAdvertisedDevice* device) override {
@@ -78,8 +79,9 @@ void update_ble(){
         scan->stop();
     }
 
+  if (toggleBLE){
     if (rssiBeacon > -thresholdBLE && !armed){
         arm(calibration);
     }
-
+  }
 }

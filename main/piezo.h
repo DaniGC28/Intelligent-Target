@@ -5,5 +5,6 @@ void update_piezo();
 
 extern const int piezoPin;
 extern int thresholdPiezo;
+extern bool tooglePiezo;
 
 #endif
